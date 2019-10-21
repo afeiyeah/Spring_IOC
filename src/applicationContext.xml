@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans.xsd				
+						http://www.springframework.org/schema/context 
+						http://www.springframework.org/schema/context/spring-context.xsd">
+   <!--
+		单例模式：java的一种设计模式，一个类有且只有一个类对象   
+   		bean元素：用于管理类的对象 
+   		id（或name属性）属性：bean元素的唯一标识
+   		class属性：要进行对象管理的类的全类名
+   		scope属性：用来定义类对象的作用范围（生命周期）。共5个可选值，
+   			默认值：singleton单例模式，一个Spring容器中只有一个Bean的实例
+   			prototype: 每次调用新建一个Bean实例
+   			request: Spring web项目中，给每一个http request新建一个Bean实例
+   			session: Spring web项目中，给每一个http session新建一个Bean实例
+   			global session: 只在Spring portal应用中有用，给每一个global http session新建一个Bean实例
+   		lazy-init属性：用来设定对象是否要延迟初始化
+   			true：延迟初始化，在调用bean元素时才构建类的对象
+   			false:非延迟初始化(默认值)，在容器加载的过程中就构建类的对象（推荐）
+    -->
+   <bean id="first" class="spring.ioc.bean.FirstBean" scope="prototype" lazy-init="false"></bean>
+   <bean id="second" class="spring.ioc.bean.SecondBean" scope="prototype" lazy-init="false"></bean>
+   <bean id="example" class="spring.ioc.bean.ExampleBean" >
+   		<constructor-arg >
+   			<ref bean="first"/>
+   		</constructor-arg>
+   		<constructor-arg >
+   			<ref bean="second"/>
+   		</constructor-arg>
+   </bean>
+   <!-- property元素
+   		name属性：类中成员变量的名称
+   		ref属性：要注入的bean的id
+    -->
+   <bean id="newexample" class="spring.ioc.bean.NewExampleBean">
+   		<property name="firstBean" ref="first"/>
+   		<property name="secondBean" ref="second"/>
+   </bean>
+   
+   <bean id="userDao" class="spring.ioc.dao.UserDao">
+   </bean>
+   <bean id="userService" class="spring.ioc.service.UserService">
+   		<property name="userdao" ref="userDao" />
+   </bean>
+   
+   <bean id="student" class="spring.ioc.bean.student" scope="prototype">
+   		<property name="sid" value="1"></property>
+   		<property name="sname" value="张三"></property>
+   		<property name="address" value=""></property>
+   		<property name="date">
+   			<null/>
+   		</property>
+   		<property name="courses">
+   			<set>
+   				<ref bean="course1"/>
+   				<ref bean="course2"/>
+   			</set>
+   		</property>
+   		<property name="scores">
+   			<map>
+   				<entry key="Java" value="89"></entry>
+   				<entry key="框架课程" value="80"></entry>
+   			</map>
+   		</property>
+   		<property name="phones">
+   			<list>
+   				<value>123435353</value>
+   				<value>343212324</value>
+   			</list>
+   		</property>
+   </bean>
+    <bean id="course1" class="spring.ioc.bean.Course">
+    	<property name="cid" value="101"/>
+    	<property name="cname" value="JAVA"/>
+    </bean>
+    <bean id="course2" class="spring.ioc.bean.Course">
+    	<property name="cid" value="102"/>
+    	<property name="cname" value="MySQL"/>
+    </bean>
+</beans>
+
+
+
+
+
+
+
